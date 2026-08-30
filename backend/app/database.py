@@ -1,9 +1,23 @@
 import sqlite3
+import sys
+import os
 
-DB_NAME = "plant_data.db"
+
+def get_db_path():
+    """Get the database path. Uses AppData in production (frozen exe), CWD in development."""
+    if getattr(sys, 'frozen', False):
+        # Production: store DB in user's AppData so it's writable
+        app_data = os.path.join(os.environ.get('APPDATA', os.path.expanduser('~')), 'DesalPredictionApp')
+        os.makedirs(app_data, exist_ok=True)
+        return os.path.join(app_data, 'plant_data.db')
+    return 'plant_data.db'
+
+
+DB_NAME = get_db_path()
 
 def get_connection():
     return sqlite3.connect(DB_NAME)
+
 
 
 ##################################

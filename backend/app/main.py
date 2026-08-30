@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from app.validate_input.manual_data import PredictionInput
-from app.database import save_entry, get_entries, get_entry
+from app.database import save_entry, get_entries, get_entry, create_tables_entries
 from app.predict import predict
 from app.iot_generator import generator
 
@@ -78,6 +78,7 @@ async def background_iot_stream():
 
 @app.on_event("startup")
 async def startup_event():
+    create_tables_entries()
     stream_state["task"] = asyncio.create_task(background_iot_stream())
     print("[IoT Stream] Background generator started.")
 

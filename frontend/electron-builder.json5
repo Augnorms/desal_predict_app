@@ -1,15 +1,22 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "com.desalination.prediction",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "Desalination Prediction App",
   "directories": {
     "output": "release/${version}"
   },
   "files": [
     "dist",
     "dist-electron"
+  ],
+  "extraResources": [
+    {
+      "from": "../backend/dist/backend_server",
+      "to": "backend_server",
+      "filter": ["**/*"]
+    }
   ],
   "mac": {
     "target": [
@@ -32,7 +39,9 @@
     "oneClick": false,
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "installerSidebar": null,
+    "shortcutName": "Desalination Prediction App"
   },
   "linux": {
     "target": [

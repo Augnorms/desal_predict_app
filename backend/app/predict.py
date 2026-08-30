@@ -2,6 +2,7 @@
 import joblib
 import pandas as pd
 import os
+import sys
 
 # Define feature names exactly as the model expects
 feature_names = [
@@ -14,9 +15,14 @@ feature_names = [
     'Pressure Drop (bar)'
 ]
 
-# Path to models - resolve relative to this file's location
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "models", "saved_models")
+# Path to models - resolve relative to this file's location or _MEIPASS for frozen exe
+if getattr(sys, 'frozen', False):
+    candidate1 = os.path.join(sys._MEIPASS, "app", "models", "saved_models")
+    candidate2 = os.path.join(sys._MEIPASS, "models", "saved_models")
+    MODEL_PATH = candidate1 if os.path.exists(candidate1) else candidate2
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    MODEL_PATH = os.path.join(BASE_DIR, "models", "saved_models")
 
 # Load models with the CORRECT file names
 model_permeate_flowrate = joblib.load(os.path.join(MODEL_PATH, "permeate_flowrate_model_rf.pkl"))

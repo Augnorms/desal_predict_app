@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build && electron-builder",
+    "build:frontend": "vue-tsc && vite build",
+    "build:backend": "cd ../backend && venv\\Scripts\\python.exe -m PyInstaller backend_server.spec --clean --noconfirm",
+    "build:installer": "electron-builder",
+    "build": "npm run build:backend && npm run build:frontend && npm run build:installer",
     "preview": "vite preview"
   },
   "dependencies": {
